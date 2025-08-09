@@ -106,8 +106,12 @@ export function parseAndFormatApiError(
   currentModel?: string,
   fallbackModel?: string,
 ): string {
+  console.error('🔍 [DEBUG] parseAndFormatApiError called with error:', error);
+  console.error('🔍 [DEBUG] Error stack:', new Error().stack);
+  
   if (isStructuredError(error)) {
     let text = `[API Error: ${error.message}]`;
+    console.error('🔍 [DEBUG] Structured error - status:', error.status, 'message:', error.message);
     if (error.status === 429) {
       text += getRateLimitMessage(
         authType,
@@ -122,17 +126,22 @@ export function parseAndFormatApiError(
 
   // The error message might be a string containing a JSON object.
   if (typeof error === 'string') {
+    console.error('🔍 [DEBUG] String error detected:', error);
     const jsonStart = error.indexOf('{');
     if (jsonStart === -1) {
+      console.error('🔍 [DEBUG] No JSON found in string error, returning as is');
       return `[API Error: ${error}]`; // Not a JSON error, return as is.
     }
 
     const jsonString = error.substring(jsonStart);
+    console.error('🔍 [DEBUG] Extracted JSON string:', jsonString);
 
     try {
       const parsedError = JSON.parse(jsonString) as unknown;
+      console.error('🔍 [DEBUG] Parsed error:', parsedError);
       if (isApiError(parsedError)) {
         let finalMessage = parsedError.error.message;
+        console.error('🔍 [DEBUG] API error - code:', parsedError.error.code, 'status:', parsedError.error.status, 'message:', finalMessage);
         try {
           // See if the message is a stringified JSON with another error
           const nestedError = JSON.parse(finalMessage) as unknown;
@@ -155,10 +164,12 @@ export function parseAndFormatApiError(
         return text;
       }
     } catch (_e) {
+      console.error('🔍 [DEBUG] Failed to parse JSON error:', _e);
       // Not a valid JSON, fall through and return the original message.
     }
     return `[API Error: ${error}]`;
   }
 
+  console.error('🔍 [DEBUG] Unknown error type:', typeof error, error);
   return '[API Error: An unknown error occurred.]';
 }

@@ -420,6 +420,10 @@ export const useGeminiStream = (
 
   const handleErrorEvent = useCallback(
     (eventValue: ErrorEvent['value'], userMessageTimestamp: number) => {
+      console.error('🔍 [DEBUG] handleErrorEvent called with error:', eventValue.error);
+      console.error('🔍 [DEBUG] handleErrorEvent stack trace:', new Error().stack);
+      console.error('🔍 [DEBUG] handleErrorEvent eventValue:', eventValue);
+      
       if (pendingHistoryItemRef.current) {
         addItem(pendingHistoryItemRef.current, userMessageTimestamp);
         setPendingHistoryItem(null);
@@ -689,6 +693,8 @@ export const useGeminiStream = (
           handleLoopDetectedEvent();
         }
       } catch (error: unknown) {
+        console.error('🔍 [DEBUG] Stream processing error caught:', error);
+        console.error('🔍 [DEBUG] Stream processing error stack:', new Error().stack);
         if (error instanceof UnauthorizedError) {
           onAuthError();
         } else if (!isNodeError(error) || error.name !== 'AbortError') {

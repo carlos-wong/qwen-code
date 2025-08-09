@@ -525,6 +525,13 @@ export class GeminiClient {
     // Use current model from config instead of hardcoded Flash model
     const modelToUse =
       model || this.config.getModel() || DEFAULT_GEMINI_FLASH_MODEL;
+    
+    console.error('🔍 [DEBUG] generateJson called with:');
+    console.error('🔍 [DEBUG] - modelToUse:', modelToUse);
+    console.error('🔍 [DEBUG] - contents length:', contents.length);
+    console.error('🔍 [DEBUG] - schema:', JSON.stringify(schema, null, 2));
+    console.error('🔍 [DEBUG] - config:', config);
+    
     try {
       const userMemory = this.config.getUserMemory();
       const systemPromptMappings = this.config.getSystemPromptMappings();
@@ -550,17 +557,21 @@ export class GeminiClient {
         },
       ];
 
+      const generateContentRequest = {
+        model: modelToUse,
+        config: {
+          ...requestConfig,
+          systemInstruction,
+          tools,
+        },
+        contents,
+      };
+      
+      console.error('🔍 [DEBUG] generateContent request:', JSON.stringify(generateContentRequest, null, 2));
+
       const apiCall = () =>
         this.getContentGenerator().generateContent(
-          {
-            model: modelToUse,
-            config: {
-              ...requestConfig,
-              systemInstruction,
-              tools,
-            },
-            contents,
-          },
+          generateContentRequest,
           this.lastPromptId,
         );
 
@@ -580,6 +591,10 @@ export class GeminiClient {
       }
       return {};
     } catch (error) {
+      console.error('🔍 [DEBUG] generateJson caught error:', error);
+      console.error('🔍 [DEBUG] error type:', typeof error);
+      console.error('🔍 [DEBUG] error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      
       if (abortSignal.aborted) {
         throw error;
       }
@@ -592,6 +607,8 @@ export class GeminiClient {
         throw error;
       }
 
+      console.error('🔍 [DEBUG] About to report error with contents:', JSON.stringify(contents, null, 2));
+      
       await reportError(
         error,
         'Error generating JSON content via API.',

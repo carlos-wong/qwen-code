@@ -125,6 +125,8 @@ export async function runNonInteractive(
       }
     }
   } catch (error) {
+    console.error('🔍 [DEBUG] nonInteractiveCli error caught:', error);
+    console.error('🔍 [DEBUG] nonInteractiveCli error stack:', new Error().stack);
     console.error(
       parseAndFormatApiError(
         error,
