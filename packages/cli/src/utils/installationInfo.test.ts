@@ -84,9 +84,7 @@ describe('getInstallationInfo', () => {
 
     expect(info.packageManager).toBe(PackageManager.UNKNOWN);
     expect(info.isGlobal).toBe(false);
-    expect(info.updateMessage).toBe(
-      'Running from a local git clone. Please update with "git pull".',
-    );
+    expect(info.updateMessage).toBe(undefined);
   });
 
   it('should detect running via npx', () => {

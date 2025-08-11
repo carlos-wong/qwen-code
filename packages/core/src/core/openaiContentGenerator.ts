@@ -212,7 +212,7 @@ export class OpenAIContentGenerator implements ContentGenerator {
           request.config.tools,
         );
       }
-      
+
       const completion = (await this.client.chat.completions.create(
         createParams,
       )) as OpenAI.Chat.ChatCompletion;

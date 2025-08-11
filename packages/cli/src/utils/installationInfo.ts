@@ -53,8 +53,8 @@ export function getInstallationInfo(
       return {
         packageManager: PackageManager.UNKNOWN, // Not managed by a package manager in this sense
         isGlobal: false,
-        updateMessage:
-          'Running from a local git clone. Please update with "git pull".',
+        // updateMessage: 'Running from a local git clone. Please update with "git pull".',
+        updateMessage: undefined, // Hide git clone notification
       };
     }
 

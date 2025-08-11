@@ -525,7 +525,7 @@ export class GeminiClient {
     // Use current model from config instead of hardcoded Flash model
     const modelToUse =
       model || this.config.getModel() || DEFAULT_GEMINI_FLASH_MODEL;
-    
+
     try {
       const userMemory = this.config.getUserMemory();
       const systemPromptMappings = this.config.getSystemPromptMappings();
@@ -560,7 +560,7 @@ export class GeminiClient {
         },
         contents,
       };
-      
+
       const apiCall = () =>
         this.getContentGenerator().generateContent(
           generateContentRequest,

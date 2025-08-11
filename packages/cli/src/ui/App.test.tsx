@@ -386,7 +386,11 @@ describe('App UI', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(lastFrame()).toContain(
+      // Update notifications are now disabled, so we don't expect this message
+      // expect(lastFrame()).toContain(
+      //   'Update successful! The new version will be used on your next run.',
+      // );
+      expect(lastFrame()).not.toContain(
         'Update successful! The new version will be used on your next run.',
       );
     });
@@ -416,7 +420,11 @@ describe('App UI', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(lastFrame()).toContain(
+      // Update notifications are now disabled, so we don't expect this message
+      // expect(lastFrame()).toContain(
+      //   'Automatic update failed. Please try updating manually',
+      // );
+      expect(lastFrame()).not.toContain(
         'Automatic update failed. Please try updating manually',
       );
     });
@@ -448,7 +456,11 @@ describe('App UI', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(lastFrame()).toContain(
+      // Update notifications are now disabled, so we don't expect this message
+      // expect(lastFrame()).toContain(
+      //   'Automatic update failed. Please try updating manually',
+      // );
+      expect(lastFrame()).not.toContain(
         'Automatic update failed. Please try updating manually',
       );
     });

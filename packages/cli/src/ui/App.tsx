@@ -78,18 +78,18 @@ import { useTextBuffer } from './components/shared/text-buffer.js';
 import { useVimMode, VimModeProvider } from './contexts/VimModeContext.js';
 import { useVim } from './hooks/vim.js';
 import * as fs from 'fs';
-import { UpdateNotification } from './components/UpdateNotification.js';
+// import { UpdateNotification } from './components/UpdateNotification.js';
 import {
   isProQuotaExceededError,
   isGenericQuotaExceededError,
   UserTierId,
 } from '@qwen-code/qwen-code-core';
-import { UpdateObject } from './utils/updateCheck.js';
+// import { UpdateObject } from './utils/updateCheck.js';
 import ansiEscapes from 'ansi-escapes';
 import { OverflowProvider } from './contexts/OverflowContext.js';
 import { ShowMoreLines } from './components/ShowMoreLines.js';
 import { PrivacyNotice } from './privacy/PrivacyNotice.js';
-import { setUpdateHandler } from '../utils/handleAutoUpdate.js';
+// import { setUpdateHandler } from '../utils/handleAutoUpdate.js';
 import { appEvents, AppEvent } from '../utils/events.js';
 
 const CTRL_EXIT_PROMPT_DURATION_MS = 1000;
@@ -112,15 +112,15 @@ export const AppWrapper = (props: AppProps) => (
 const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
   const isFocused = useFocus();
   useBracketedPaste();
-  const [updateInfo, setUpdateInfo] = useState<UpdateObject | null>(null);
+  // const [updateInfo, setUpdateInfo] = useState<UpdateObject | null>(null);
   const { stdout } = useStdout();
   const nightly = version.includes('nightly');
   const { history, addItem, clearItems, loadHistory } = useHistory();
 
-  useEffect(() => {
-    const cleanup = setUpdateHandler(addItem, setUpdateInfo);
-    return cleanup;
-  }, [addItem]);
+  // useEffect(() => {
+  //   const cleanup = setUpdateHandler(addItem, setUpdateInfo);
+  //   return cleanup;
+  // }, [addItem]);
 
   const {
     consoleMessages,
@@ -859,8 +859,8 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
         </OverflowProvider>
 
         <Box flexDirection="column" ref={mainControlsRef}>
-          {/* Move UpdateNotification to render update notification above input area */}
-          {updateInfo && <UpdateNotification message={updateInfo.message} />}
+          {/* UpdateNotification disabled - update notifications hidden */}
+          {/* {updateInfo && <UpdateNotification message={updateInfo.message} />} */}
           {startupWarnings.length > 0 && (
             <Box
               borderStyle="round"
