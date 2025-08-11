@@ -213,10 +213,6 @@ export class OpenAIContentGenerator implements ContentGenerator {
         );
       }
       
-      // Debug logging for API request
-      console.error('🔍 [DEBUG] OpenAI API Request:', JSON.stringify(createParams, null, 2));
-      console.error('🔍 [DEBUG] Base URL:', this.client.baseURL);
-      
       const completion = (await this.client.chat.completions.create(
         createParams,
       )) as OpenAI.Chat.ChatCompletion;
@@ -346,10 +342,6 @@ export class OpenAIContentGenerator implements ContentGenerator {
           request.config.tools,
         );
       }
-
-      // Debug logging for streaming API request
-      console.error('🔍 [DEBUG] OpenAI Streaming API Request:', JSON.stringify(createParams, null, 2));
-      console.error('🔍 [DEBUG] Streaming Base URL:', this.client.baseURL);
 
       const stream = (await this.client.chat.completions.create(
         createParams,
@@ -768,8 +760,6 @@ export class OpenAIContentGenerator implements ContentGenerator {
     geminiTools: ToolListUnion,
   ): Promise<OpenAI.Chat.ChatCompletionTool[]> {
     const openAITools: OpenAI.Chat.ChatCompletionTool[] = [];
-    
-    console.error('🔍 [DEBUG] convertGeminiToolsToOpenAI called with:', JSON.stringify(geminiTools, null, 2));
 
     for (const tool of geminiTools) {
       let actualTool: Tool;
@@ -801,7 +791,6 @@ export class OpenAIContentGenerator implements ContentGenerator {
       }
     }
 
-    console.error('🔍 [DEBUG] convertGeminiToolsToOpenAI returning:', JSON.stringify(openAITools, null, 2));
     return openAITools;
   }
 

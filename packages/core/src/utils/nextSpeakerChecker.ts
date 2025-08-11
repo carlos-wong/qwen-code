@@ -44,18 +44,14 @@ export async function checkNextSpeaker(
   geminiClient: GeminiClient,
   abortSignal: AbortSignal,
 ): Promise<NextSpeakerResponse | null> {
-  console.error('🔍 [DEBUG] checkNextSpeaker called');
-  
   // We need to capture the curated history because there are many moments when the model will return invalid turns
   // that when passed back up to the endpoint will break subsequent calls. An example of this is when the model decides
   // to respond with an empty part collection if you were to send that message back to the server it will respond with
   // a 400 indicating that model part collections MUST have content.
   const curatedHistory = chat.getHistory(/* curated */ true);
-  console.error('🔍 [DEBUG] curatedHistory length:', curatedHistory.length);
 
   // Ensure there's a model response to analyze
   if (curatedHistory.length === 0) {
-    console.error('🔍 [DEBUG] curatedHistory is empty, returning null');
     // Cannot determine next speaker if history is empty.
     return null;
   }
@@ -111,19 +107,13 @@ export async function checkNextSpeaker(
     { role: 'user', parts: [{ text: CHECK_PROMPT }] },
   ];
 
-  console.error('🔍 [DEBUG] contents for generateJson:', JSON.stringify(contents, null, 2));
-  console.error('🔍 [DEBUG] RESPONSE_SCHEMA:', JSON.stringify(RESPONSE_SCHEMA, null, 2));
-  console.error('🔍 [DEBUG] DEFAULT_GEMINI_FLASH_LITE_MODEL:', DEFAULT_GEMINI_FLASH_LITE_MODEL);
-
   try {
-    console.error('🔍 [DEBUG] About to call geminiClient.generateJson');
     const parsedResponse = (await geminiClient.generateJson(
       contents,
       RESPONSE_SCHEMA,
       abortSignal,
       DEFAULT_GEMINI_FLASH_LITE_MODEL,
     )) as unknown as NextSpeakerResponse;
-    console.error('🔍 [DEBUG] generateJson response:', parsedResponse);
 
     if (
       parsedResponse &&
@@ -134,9 +124,6 @@ export async function checkNextSpeaker(
     }
     return null;
   } catch (error) {
-    console.error('🔍 [DEBUG] checkNextSpeaker caught error:', error);
-    console.error('🔍 [DEBUG] error type:', typeof error);
-    console.error('🔍 [DEBUG] error stack:', error instanceof Error ? error.stack : 'No stack trace');
     console.warn(
       'Failed to talk to Gemini endpoint when seeing if conversation should continue.',
       error,
