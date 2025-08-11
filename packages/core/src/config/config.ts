@@ -313,7 +313,7 @@ export class Config {
       outfile: params.telemetry?.outfile,
     };
     this.gitCoAuthor = {
-      enabled: params.gitCoAuthor?.enabled ?? true,
+      enabled: params.gitCoAuthor?.enabled ?? false,
       name: params.gitCoAuthor?.name ?? 'Qwen-Coder',
       email: params.gitCoAuthor?.email ?? 'qwen-coder@alibabacloud.com',
     };
