@@ -168,7 +168,7 @@ export function getInstallationInfo(
       updateCommand,
       updateMessage: isAutoUpdateDisabled
         ? `Please run ${updateCommand} to update`
-        : 'Installed with npm. Attempting to automatically update now...',
+        : 'Installed with npm. Automatic update disabled.',
     };
   } catch (error) {
     console.log(error);
