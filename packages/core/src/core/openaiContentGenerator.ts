@@ -205,10 +205,6 @@ export class OpenAIContentGenerator implements ContentGenerator {
         model: this.model,
         messages,
         ...samplingParams,
-        metadata: {
-          sessionId: this.config.getSessionId?.(),
-          promptId: userPromptId,
-        },
       };
 
       if (request.config?.tools) {
@@ -216,7 +212,11 @@ export class OpenAIContentGenerator implements ContentGenerator {
           request.config.tools,
         );
       }
-      // console.log('createParams', createParams);
+      
+      // Debug logging for API request
+      console.error('🔍 [DEBUG] OpenAI API Request:', JSON.stringify(createParams, null, 2));
+      console.error('🔍 [DEBUG] Base URL:', this.client.baseURL);
+      
       const completion = (await this.client.chat.completions.create(
         createParams,
       )) as OpenAI.Chat.ChatCompletion;
@@ -339,10 +339,6 @@ export class OpenAIContentGenerator implements ContentGenerator {
         ...samplingParams,
         stream: true,
         stream_options: { include_usage: true },
-        metadata: {
-          sessionId: this.config.getSessionId?.(),
-          promptId: userPromptId,
-        },
       };
 
       if (request.config?.tools) {
@@ -351,7 +347,9 @@ export class OpenAIContentGenerator implements ContentGenerator {
         );
       }
 
-      // console.log('createParams', createParams);
+      // Debug logging for streaming API request
+      console.error('🔍 [DEBUG] OpenAI Streaming API Request:', JSON.stringify(createParams, null, 2));
+      console.error('🔍 [DEBUG] Streaming Base URL:', this.client.baseURL);
 
       const stream = (await this.client.chat.completions.create(
         createParams,
@@ -749,6 +747,8 @@ export class OpenAIContentGenerator implements ContentGenerator {
           // Ensure length constraints are integers, not strings
           if (typeof value === 'string' && !isNaN(Number(value))) {
             result[key] = parseInt(value, 10);
+          } else if (typeof value === 'number') {
+            result[key] = Math.floor(value); // Ensure it's an integer
           } else {
             result[key] = value;
           }
@@ -768,6 +768,8 @@ export class OpenAIContentGenerator implements ContentGenerator {
     geminiTools: ToolListUnion,
   ): Promise<OpenAI.Chat.ChatCompletionTool[]> {
     const openAITools: OpenAI.Chat.ChatCompletionTool[] = [];
+    
+    console.error('🔍 [DEBUG] convertGeminiToolsToOpenAI called with:', JSON.stringify(geminiTools, null, 2));
 
     for (const tool of geminiTools) {
       let actualTool: Tool;
@@ -799,10 +801,7 @@ export class OpenAIContentGenerator implements ContentGenerator {
       }
     }
 
-    // console.log(
-    //   'OpenAI Tools Parameters:',
-    //   JSON.stringify(openAITools, null, 2),
-    // );
+    console.error('🔍 [DEBUG] convertGeminiToolsToOpenAI returning:', JSON.stringify(openAITools, null, 2));
     return openAITools;
   }
 
