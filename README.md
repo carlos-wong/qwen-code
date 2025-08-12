@@ -1,351 +1,142 @@
-# Qwen Code
+# Qwen Code - 智能编程助手
 
-<div align="center">
+Qwen Code 是一个专为开发者设计的 AI 编程助手工具，提供智能代码补全、优化建议和错误检测功能。
 
-![Qwen Code Screenshot](./docs/assets/qwen-screenshot.png)
+## 🚀 安装指南
 
-[![npm version](https://img.shields.io/npm/v/@qwen-code/qwen-code.svg)](https://www.npmjs.com/package/@qwen-code/qwen-code)
-[![License](https://img.shields.io/github/license/QwenLM/qwen-code.svg)](./LICENSE)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org/)
-[![Downloads](https://img.shields.io/npm/dm/@qwen-code/qwen-code.svg)](https://www.npmjs.com/package/@qwen-code/qwen-code)
+### 系统要求
+- Node.js >= 20.0.0
+- 支持 macOS、Linux、Windows
 
-**AI-powered command-line workflow tool for developers**
-
-[Installation](#installation) • [Quick Start](#quick-start) • [Features](#key-features) • [Documentation](./docs/) • [Contributing](./CONTRIBUTING.md)
-
-</div>
-
-Qwen Code is a powerful command-line AI workflow tool adapted from [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) ([details](./README.gemini.md)), specifically optimized for [Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder) models. It enhances your development workflow with advanced code understanding, automated tasks, and intelligent assistance.
-
-## 💡 Free Options Available
-
-Get started with Qwen Code at no cost using any of these free options:
-
-### 🔥 Qwen OAuth (Recommended)
-
-- **2,000 requests per day** with no token limits
-- **60 requests per minute** rate limit
-- Simply run `qwen` and authenticate with your qwen.ai account
-- Automatic credential management and refresh
-- Use `/auth` command to switch to Qwen OAuth if you have initialized with OpenAI compatible mode
-
-### 🌏 Regional Free Tiers
-
-- **Mainland China**: ModelScope offers **2,000 free API calls per day**
-- **International**: OpenRouter provides **up to 1,000 free API calls per day** worldwide
-
-For detailed setup instructions, see [Authorization](#authorization).
-
-> [!WARNING]
-> **Token Usage Notice**: Qwen Code may issue multiple API calls per cycle, resulting in higher token usage (similar to Claude Code). We're actively optimizing API efficiency.
-
-## Key Features
-
-- **Code Understanding & Editing** - Query and edit large codebases beyond traditional context window limits
-- **Workflow Automation** - Automate operational tasks like handling pull requests and complex rebases
-- **Enhanced Parser** - Adapted parser specifically optimized for Qwen-Coder models
-
-## Installation
-
-### Prerequisites
-
-Ensure you have [Node.js version 20](https://nodejs.org/en/download) or higher installed.
-
+### 标准安装流程
 ```bash
-curl -qL https://www.npmjs.com/install.sh | sh
-```
-
-### Install from npm
-
-```bash
-npm install -g @qwen-code/qwen-code@latest
-qwen --version
-```
-
-### Install from source
-
-```bash
-git clone https://github.com/QwenLM/qwen-code.git
+# 1. 克隆项目
+git clone https://github.com/carlos-wong/qwen-code.git
 cd qwen-code
+
+# 2. 安装依赖
 npm install
+
+# 3. 构建项目
+npm run build
+
+# 4. 全局安装
 npm install -g .
 ```
 
-## Quick Start
+## 🔧 启动配置
 
+### 环境变量设置
+
+在使用 Qwen Code 之前，需要配置以下环境变量：
+
+#### GLM 模型配置
 ```bash
-# Start Qwen Code
-qwen
+# 设置 GLM API 基础 URL
+export GLM_OPENAI_BASE_URL="https://open.bigmodel.cn/api/paas/v4"
 
-# Example commands
-> Explain this codebase structure
-> Help me refactor this function
-> Generate unit tests for this module
+# 设置 GLM 模型名称
+export GLM_OPENAI_MODEL="glm-4-flash"
+
+# 设置 GLM API 密钥
+export GLM_OPENAI_API_KEY="your-glm-api-key-here"
 ```
 
-### Session Management
+#### 永久保存环境变量
+**macOS/Linux (bash/zsh):**
+```bash
+# 编辑 ~/.bashrc 或 ~/.zshrc
+echo 'export GLM_OPENAI_BASE_URL="https://open.bigmodel.cn/api/paas/v4"' >> ~/.bashrc
+echo 'export GLM_OPENAI_MODEL="glm-4-flash"' >> ~/.bashrc
+echo 'export GLM_OPENAI_API_KEY="your-glm-api-key-here"' >> ~/.bashrc
 
-Control your token usage with configurable session limits to optimize costs and performance.
-
-#### Configure Session Token Limit
-
-Create or edit `.qwen/settings.json` in your home directory:
-
-```json
-{
-  "sessionTokenLimit": 32000
-}
+# 重新加载配置
+source ~/.bashrc
 ```
 
-#### Session Commands
-
-- **`/compress`** - Compress conversation history to continue within token limits
-- **`/clear`** - Clear all conversation history and start fresh
-- **`/stats`** - Check current token usage and limits
-
-> 📝 **Note**: Session token limit applies to a single conversation, not cumulative API calls.
-
-### Authorization
-
-Choose your preferred authentication method based on your needs:
-
-#### 1. Qwen OAuth (🚀 Recommended - Start in 30 seconds)
-
-The easiest way to get started - completely free with generous quotas:
-
+**macOS (fish shell):**
 ```bash
-# Just run this command and follow the browser authentication
+# 编辑 ~/.config/fish/config.fish
+echo 'set -x GLM_OPENAI_BASE_URL "https://open.bigmodel.cn/api/paas/v4"' >> ~/.config/fish/config.fish
+echo 'set -x GLM_OPENAI_MODEL "glm-4-flash"' >> ~/.config/fish/config.fish
+echo 'set -x GLM_OPENAI_API_KEY "your-glm-api-key-here"' >> ~/.config/fish/config.fish
+```
+
+### 启动方式
+
+#### 基本启动
+```bash
 qwen
 ```
 
-**What happens:**
-
-1. **Instant Setup**: CLI opens your browser automatically
-2. **One-Click Login**: Authenticate with your qwen.ai account
-3. **Automatic Management**: Credentials cached locally for future use
-4. **No Configuration**: Zero setup required - just start coding!
-
-**Free Tier Benefits:**
-
-- ✅ **2,000 requests/day** (no token counting needed)
-- ✅ **60 requests/minute** rate limit
-- ✅ **Automatic credential refresh**
-- ✅ **Zero cost** for individual users
-- ℹ️ **Note**: Model fallback may occur to maintain service quality
-
-#### 2. OpenAI-Compatible API
-
-Use API keys for OpenAI or other compatible providers:
-
-**Configuration Methods:**
-
-1. **Environment Variables**
-
-   ```bash
-   export OPENAI_API_KEY="your_api_key_here"
-   export OPENAI_BASE_URL="your_api_endpoint"
-   export OPENAI_MODEL="your_model_choice"
-   ```
-
-2. **Project `.env` File**
-   Create a `.env` file in your project root:
-   ```env
-   OPENAI_API_KEY=your_api_key_here
-   OPENAI_BASE_URL=your_api_endpoint
-   OPENAI_MODEL=your_model_choice
-   ```
-
-**API Provider Options**
-
-> ⚠️ **Regional Notice:**
->
-> - **Mainland China**: Use Alibaba Cloud Bailian or ModelScope
-> - **International**: Use Alibaba Cloud ModelStudio or OpenRouter
-
-<details>
-<summary><b>🇨🇳 For Users in Mainland China</b></summary>
-
-**Option 1: Alibaba Cloud Bailian** ([Apply for API Key](https://bailian.console.aliyun.com/))
-
+#### 使用 GLM 环境变量启动
 ```bash
-export OPENAI_API_KEY="your_api_key_here"
-export OPENAI_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
-export OPENAI_MODEL="qwen3-coder-plus"
+OPENAI_BASE_URL=$GLM_OPENAI_BASE_URL OPENAI_MODEL=$GLM_OPENAI_MODEL OPENAI_API_KEY=$GLM_OPENAI_API_KEY qwen
 ```
 
-**Option 2: ModelScope (Free Tier)** ([Apply for API Key](https://modelscope.cn/docs/model-service/API-Inference/intro))
-
-- ✅ **2,000 free API calls per day**
-- ⚠️ Connect your Aliyun account to avoid authentication errors
-
+#### 调试模式启动
 ```bash
-export OPENAI_API_KEY="your_api_key_here"
-export OPENAI_BASE_URL="https://api-inference.modelscope.cn/v1"
-export OPENAI_MODEL="Qwen/Qwen3-Coder-480B-A35B-Instruct"
+npm run debug
 ```
 
-</details>
+## ⚠️ 兼容性说明
 
-<details>
-<summary><b>🌍 For International Users</b></summary>
+### 已移除的不兼容模式
+- **移除了 OpenAI 原生模式**：不再直接支持 OpenAI API，专注于 GLM 模型优化
+- **移除了多模型并行模式**：简化为单一 GLM 模型支持，确保稳定性
+- **移除了实验性功能**：去除了可能影响智谱兼容性的实验性特性
 
-**Option 1: Alibaba Cloud ModelStudio** ([Apply for API Key](https://modelstudio.console.alibabacloud.com/))
+### GLM 优化特性
+- ✅ 完全兼容 GLM-4-Flash 模型
+- ✅ 针对 GLM API 进行了专门优化
+- ✅ 支持 GLM 的流式响应
+- ✅ 适配 GLM 的错误处理机制
+
+## 📦 开发命令
 
 ```bash
-export OPENAI_API_KEY="your_api_key_here"
-export OPENAI_BASE_URL="https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
-export OPENAI_MODEL="qwen3-coder-plus"
+# 完整项目检查
+npm run preflight
+
+# 运行测试
+npm run test
+
+# 代码规范检查
+npm run lint
+
+# 构建项目
+npm run build
+
+# 打包项目
+npm run bundle
+
+# 格式化代码
+npm run format
 ```
 
-**Option 2: OpenRouter (Free Tier Available)** ([Apply for API Key](https://openrouter.ai/))
+## 🌟 主要功能
+
+- **智能代码补全**：基于 GLM 模型的上下文感知代码建议
+- **代码优化**：自动识别性能瓶颈并提供优化方案
+- **错误检测**：实时发现代码中的潜在问题
+- **多语言支持**：支持 JavaScript、TypeScript、Python 等主流语言
+- **项目集成**：无缝集成到现有开发工作流中
+
+## 📝 使用示例
 
 ```bash
-export OPENAI_API_KEY="your_api_key_here"
-export OPENAI_BASE_URL="https://openrouter.ai/api/v1"
-export OPENAI_MODEL="qwen/qwen3-coder:free"
-```
-
-</details>
-
-## Usage Examples
-
-### 🔍 Explore Codebases
-
-```bash
-cd your-project/
+# 启动交互式编程助手
 qwen
 
-# Architecture analysis
-> Describe the main pieces of this system's architecture
-> What are the key dependencies and how do they interact?
-> Find all API endpoints and their authentication methods
+# 在项目中使用
+cd your-project
+qwen --help
 ```
 
-### 💻 Code Development
+## 🌐 仓库地址
 
-```bash
-# Refactoring
-> Refactor this function to improve readability and performance
-> Convert this class to use dependency injection
-> Split this large module into smaller, focused components
+[https://github.com/carlos-wong/qwen-code](https://github.com/carlos-wong/qwen-code)
 
-# Code generation
-> Create a REST API endpoint for user management
-> Generate unit tests for the authentication module
-> Add error handling to all database operations
-```
+## 🤝 贡献指南
 
-### 🔄 Automate Workflows
-
-```bash
-# Git automation
-> Analyze git commits from the last 7 days, grouped by feature
-> Create a changelog from recent commits
-> Find all TODO comments and create GitHub issues
-
-# File operations
-> Convert all images in this directory to PNG format
-> Rename all test files to follow the *.test.ts pattern
-> Find and remove all console.log statements
-```
-
-### 🐛 Debugging & Analysis
-
-```bash
-# Performance analysis
-> Identify performance bottlenecks in this React component
-> Find all N+1 query problems in the codebase
-
-# Security audit
-> Check for potential SQL injection vulnerabilities
-> Find all hardcoded credentials or API keys
-```
-
-## Popular Tasks
-
-### 📚 Understand New Codebases
-
-```text
-> What are the core business logic components?
-> What security mechanisms are in place?
-> How does the data flow through the system?
-> What are the main design patterns used?
-> Generate a dependency graph for this module
-```
-
-### 🔨 Code Refactoring & Optimization
-
-```text
-> What parts of this module can be optimized?
-> Help me refactor this class to follow SOLID principles
-> Add proper error handling and logging
-> Convert callbacks to async/await pattern
-> Implement caching for expensive operations
-```
-
-### 📝 Documentation & Testing
-
-```text
-> Generate comprehensive JSDoc comments for all public APIs
-> Write unit tests with edge cases for this component
-> Create API documentation in OpenAPI format
-> Add inline comments explaining complex algorithms
-> Generate a README for this module
-```
-
-### 🚀 Development Acceleration
-
-```text
-> Set up a new Express server with authentication
-> Create a React component with TypeScript and tests
-> Implement a rate limiter middleware
-> Add database migrations for new schema
-> Configure CI/CD pipeline for this project
-```
-
-## Commands & Shortcuts
-
-### Session Commands
-
-- `/help` - Display available commands
-- `/clear` - Clear conversation history
-- `/compress` - Compress history to save tokens
-- `/stats` - Show current session information
-- `/exit` or `/quit` - Exit Qwen Code
-
-### Keyboard Shortcuts
-
-- `Ctrl+C` - Cancel current operation
-- `Ctrl+D` - Exit (on empty line)
-- `Up/Down` - Navigate command history
-
-## Benchmark Results
-
-### Terminal-Bench Performance
-
-| Agent     | Model              | Accuracy |
-| --------- | ------------------ | -------- |
-| Qwen Code | Qwen3-Coder-480A35 | 37.5%    |
-| Qwen Code | Qwen3-Coder-30BA3B | 31.3%    |
-
-## Development & Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) to learn how to contribute to the project.
-
-For detailed authentication setup, see the [authentication guide](./docs/cli/authentication.md).
-
-## Troubleshooting
-
-If you encounter issues, check the [troubleshooting guide](docs/troubleshooting.md).
-
-## Acknowledgments
-
-This project is based on [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of the Gemini CLI team. Our main contribution focuses on parser-level adaptations to better support Qwen-Coder models.
-
-## License
-
-[LICENSE](./LICENSE)
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=QwenLM/qwen-code&type=Date)](https://www.star-history.com/#QwenLM/qwen-code&Date)
+欢迎提交 Issue 和 Pull Request 来改进项目！
